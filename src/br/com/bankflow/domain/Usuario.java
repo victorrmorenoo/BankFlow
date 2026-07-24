@@ -12,7 +12,10 @@ public class Usuario {
         this.senha = senha;
         this.carteira = new Carteira(this);
     }
-    
+
+    public boolean autenticarSenha(String senha){
+        return this.senha.equals(senha);
+    }
 
     public int getId() {
         return id;
