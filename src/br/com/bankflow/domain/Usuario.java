@@ -2,12 +2,16 @@ package br.com.bankflow.domain;
 
 public class Usuario {
     private int id;
+    private String nome;
+    private String sobrenome;
     private String email;
     private String senha;
     private Carteira carteira;
 
-    public Usuario(int id, String email, String senha) {
+    public Usuario(int id, String nome, String sobrenome, String email, String senha) {
         this.id = id;
+        this.nome = nome;
+        this.sobrenome = sobrenome;
         this.email = email;
         this.senha = senha;
         this.carteira = new Carteira(this);

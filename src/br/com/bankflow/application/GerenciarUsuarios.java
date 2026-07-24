@@ -10,14 +10,14 @@ public class GerenciarUsuarios {
     private static int proximoId = 1;
 
 
-    public static void cadastrarUsuario(String email, String senha){
+    public static void cadastrarUsuario(String nome, String sobrenome, String email, String senha){
         for (Usuario usuario : usuarios){
             if(usuario.getEmail().equals(email)){
                 System.out.println("Já existe um cadastro com esse email");
                 return;
             }
         }
-        Usuario usuario = new Usuario(proximoId, email, senha);
+        Usuario usuario = new Usuario(proximoId, nome, sobrenome, email, senha);
         usuarios.add(usuario);
         proximoId += 1;
     }
