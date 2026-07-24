@@ -1,6 +1,8 @@
 package br.com.bankflow.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Carteira {
@@ -11,11 +13,12 @@ public class Carteira {
 
     public Carteira(Usuario usuario) {
         this.usuario = usuario;
-        
+        this.movimentacoes = new ArrayList<>();
     }
 
     public void registrarEntrada(double valor, LocalDate data, String descricao, Categoria categoria) {
         Entrada entrada = new Entrada(this.proximoId, valor, data, descricao, categoria);
+        this.movimentacoes.add(entrada);
         proximoId += 1;
         saldo += valor;
     }
@@ -26,6 +29,7 @@ public class Carteira {
             return;
         }
         Saida saida = new Saida(this.proximoId, valor, data, descricao, categoria, formaPagamento);
+        this.movimentacoes.add(saida);
         proximoId += 1;
         saldo -= valor;
     }
@@ -35,6 +39,6 @@ public class Carteira {
     }
 
     public List<Movimentacao> getMovimentacoes() {
-        return movimentacoes;
+        return Collections.unmodifiableList(movimentacoes);
     }
 }

@@ -6,12 +6,13 @@ public class Usuario {
     private String senha;
     private Carteira carteira;
 
-    public Usuario(int id, String email,  String senha){
+    public Usuario(int id, String email, String senha) {
         this.id = id;
         this.email = email;
         this.senha = senha;
         this.carteira = new Carteira(this);
     }
+    
 
     public int getId() {
         return id;
@@ -20,7 +21,7 @@ public class Usuario {
     public String getEmail() {
         return email;
     }
-    
+
     public Carteira getCarteira() {
         return carteira;
     }
