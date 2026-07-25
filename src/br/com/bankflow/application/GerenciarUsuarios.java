@@ -25,9 +25,11 @@ public class GerenciarUsuarios {
     public static Usuario loginUsuario(String email, String senha){
         for (Usuario usuario: usuarios){
             if(usuario.getEmail().equals(email) && usuario.autenticarSenha(senha)){
+                System.out.println("Logado com sucesso!");
                 return usuario;
             }
         }
+        System.out.println("Email ou senha incorretos");
         return null;
     }
 }
