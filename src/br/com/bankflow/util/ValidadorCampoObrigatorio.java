@@ -1,5 +1,7 @@
 package br.com.bankflow.util;
 
+import br.com.bankflow.domain.FormaPagamento;
+
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -57,6 +59,35 @@ public class ValidadorCampoObrigatorio {
                 continue;
             }
             return valor;
+        }
+    }
+
+    public static FormaPagamento validarFormaPagamento(Scanner sc) {
+        while (true) {
+            System.out.println("------ Forma de pagamento ------");
+            System.out.println("1 - Dinheiro\n2 - Cartão de crédito\n3 - Cartão de débito\n4 - Pix\n5 - Transferência\n");
+            System.out.print("Escolha uma opção: ");
+            int opcaoPagamento = sc.nextInt();
+            switch (opcaoPagamento) {
+                case 1 -> {
+                    return FormaPagamento.DINHEIRO;
+                }
+                case 2 -> {
+                    return FormaPagamento.CARTAO_CREDITO;
+                }
+                case 3 -> {
+                    return FormaPagamento.CARTAO_DEBITO;
+                }
+                case 4 -> {
+                    return FormaPagamento.PIX;
+                }
+                case 5 -> {
+                    return FormaPagamento.TRANSFERENCIA;
+                }
+                default -> {
+                    System.out.println("Opção inválida");
+                }
+            }
         }
     }
 }

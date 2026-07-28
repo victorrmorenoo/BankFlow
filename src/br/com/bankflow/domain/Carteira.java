@@ -16,22 +16,26 @@ public class Carteira {
         this.movimentacoes = new ArrayList<>();
     }
 
-    public void registrarEntrada(double valor, LocalDate data, String descricao, Categoria categoria) {
+    public boolean registrarEntrada(double valor, LocalDate data, String descricao, Categoria categoria) {
+        if (valor <= 0) {
+            return false;
+        }
         Entrada entrada = new Entrada(this.proximoId, valor, data, descricao, categoria);
         this.movimentacoes.add(entrada);
         proximoId += 1;
         saldo += valor;
+        return true;
     }
 
-    public void registrarSaida(double valor, LocalDate data, String descricao, Categoria categoria, FormaPagamento formaPagamento) {
-        if (valor > saldo) {
-            System.out.println("Você não pode gastar mais do que tem!");
-            return;
+    public boolean registrarSaida(double valor, LocalDate data, String descricao, Categoria categoria, FormaPagamento formaPagamento) {
+        if (valor > saldo || valor <= 0) {
+            return false;
         }
         Saida saida = new Saida(this.proximoId, valor, data, descricao, categoria, formaPagamento);
         this.movimentacoes.add(saida);
         proximoId += 1;
         saldo -= valor;
+        return true;
     }
 
     public double getSaldo() {

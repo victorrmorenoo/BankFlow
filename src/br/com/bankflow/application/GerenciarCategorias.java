@@ -29,32 +29,32 @@ public class GerenciarCategorias {
 
     public static Categoria escolherCategoria(Scanner sc, TipoCategoria tipo) {
         while (true) {
-            if(tipo == TipoCategoria.ENTRADA){
-                for(Categoria categoria: categoriasEntrada){
-                    System.out.println(categoria.getId());
-                    System.out.println(categoria.getNome());
-                    System.out.println("\n----------------\n");
+            if (tipo == TipoCategoria.ENTRADA) {
+                for (Categoria categoria : categoriasEntrada) {
+                    System.out.println("----------------");
+                    System.out.println(categoria.getId() + " - " + categoria.getNome());
                 }
+                System.out.println("----------------");
                 System.out.print("Escolha uma categoria (por numero): ");
                 int opcaoCategoria = sc.nextInt();
 
-                if (opcaoCategoria < 1 || opcaoCategoria > categoriasEntrada.size()){
+                if (opcaoCategoria < 1 || opcaoCategoria > categoriasEntrada.size()) {
                     System.out.println("Opção inválida");
-                }else{
+                } else {
                     return categoriasEntrada.get(opcaoCategoria - 1);
                 }
-            }else if (tipo == TipoCategoria.SAIDA){
-                for(Categoria categoria: categoriasSaida){
-                    System.out.println(categoria.getId());
-                    System.out.println(categoria.getNome());
-                    System.out.println("\n----------------\n");
+            } else if (tipo == TipoCategoria.SAIDA) {
+                for (Categoria categoria : categoriasSaida) {
+                    System.out.println("----------------");
+                    System.out.println(categoria.getId() + " - " + categoria.getNome());
                 }
+                System.out.println("----------------");
                 System.out.print("Escolha uma categoria (por numero): ");
                 int opcaoCategoria = sc.nextInt();
 
-                if (opcaoCategoria < 1 || opcaoCategoria > categoriasSaida.size()){
+                if (opcaoCategoria < 1 || opcaoCategoria > categoriasSaida.size()) {
                     System.out.println("Opção inválida");
-                }else{
+                } else {
                     return categoriasSaida.get(opcaoCategoria - 1);
                 }
             }

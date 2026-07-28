@@ -8,11 +8,15 @@ import br.com.bankflow.util.ValidadorCampoObrigatorio;
 
 import java.time.LocalDate;
 import java.util.Scanner;
+import java.util.Locale;
+import java.text.NumberFormat;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Usuario login = null;
+        Locale localeBR = new Locale("pt", "BR");
+        NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(localeBR);
         GerenciarCategorias.inicializarCategorias();
 
         System.out.println("Bem vindo ao BankFlow!");
@@ -50,9 +54,25 @@ public class Main {
                 System.out.print("Digite a opção escolhida: ");
                 int opcaoMenu = sc.nextInt();
 
-                switch(opcaoMenu){
+                switch (opcaoMenu) {
                     case 1 -> {
-                        cadastrarEntrada(sc, login);
+                        boolean sucesso = cadastrarEntrada(sc, login);
+                        if (sucesso) {
+                            System.out.println("Entrada registrada com sucesso!");
+                        } else {
+                            System.out.println("Valor inválido");
+                        }
+                    }
+                    case 2 -> {
+                        boolean sucesso = cadastrarSaida(sc, login);
+                        if (sucesso) {
+                            System.out.println("Saída registrada com sucesso!");
+                        } else {
+                            System.out.println("Valor inválido");
+                        }
+                    }
+                    case 3 -> {
+                        consultarSaldo(login, formatoMoeda);
                     }
                     case 6 -> {
                         System.out.println("Saindo da conta...");
@@ -82,13 +102,27 @@ public class Main {
         return GerenciarUsuarios.loginUsuario(email, senha);
     }
 
-    public static void cadastrarEntrada(Scanner sc, Usuario login){
+    public static boolean cadastrarEntrada(Scanner sc, Usuario login) {
         double valor = ValidadorCampoObrigatorio.lerCampoObrigatorioDouble(sc, "Digite o valor da entrada: ", "O valor deve ser maior que zero");
         LocalDate data = ValidadorCampoObrigatorio.verificacaoData(sc, "entrada");
-        sc.nextLine();
         String descricao = ValidadorCampoObrigatorio.lerCampoObrigatorioTexto(sc, "Digite a descrição da entrada: ", "A descrição deve ser preenchida");
         Categoria categoria = GerenciarCategorias.escolherCategoria(sc, TipoCategoria.ENTRADA);
 
-        login.getCarteira().registrarEntrada(valor, data, descricao, categoria);
+        return login.getCarteira().registrarEntrada(valor, data, descricao, categoria);
     }
+
+    public static boolean cadastrarSaida(Scanner sc, Usuario login) {
+        double valor = ValidadorCampoObrigatorio.lerCampoObrigatorioDouble(sc, "Digite o valor da saída: ", "O valor deve ser maior que zero");
+        LocalDate data = ValidadorCampoObrigatorio.verificacaoData(sc, "saída");
+        String descricao = ValidadorCampoObrigatorio.lerCampoObrigatorioTexto(sc, "Digite a descrição da saída: ", "A descrição deve ser preenchida");
+        Categoria categoria = GerenciarCategorias.escolherCategoria(sc, TipoCategoria.SAIDA);
+        FormaPagamento formaPagamento = ValidadorCampoObrigatorio.validarFormaPagamento(sc);
+
+        return login.getCarteira().registrarSaida(valor, data, descricao, categoria, formaPagamento);
+    }
+
+    public static void consultarSaldo(Usuario login, NumberFormat formatoMoeda) {
+        System.out.println("Seu saldo atual é: " + formatoMoeda.format(login.getCarteira().getSaldo()));
+    }
+
 }
