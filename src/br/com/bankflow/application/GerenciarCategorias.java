@@ -1,7 +1,9 @@
 package br.com.bankflow.application;
 
 import br.com.bankflow.domain.Categoria;
+import br.com.bankflow.domain.Movimentacao;
 import br.com.bankflow.domain.TipoCategoria;
+import br.com.bankflow.domain.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,4 +62,30 @@ public class GerenciarCategorias {
             }
         }
     }
+
+    public static double filtragemSaldo(Scanner sc, Usuario login) {
+        double saldoFiltrado = 0;
+        System.out.println("------ Escolha uma categoria ------");
+        for (Categoria categoria : categoriasEntrada) {
+            System.out.println("----------------");
+            System.out.println(categoria.getId() + " - " + categoria.getNome());
+        }
+        System.out.println("----------------");
+        System.out.print("Escolha uma categoria (por numero): ");
+        int opcaoCategoria = sc.nextInt();
+
+        if (opcaoCategoria > 0 && opcaoCategoria < categoriasEntrada.size()) {
+            System.out.println("Categoria selecionada: "+categoriasEntrada.get(opcaoCategoria - 1).getNome());
+            for (Movimentacao movimentacao : login.getCarteira().getMovimentacoes()) {
+                if (movimentacao.getCategoria().getId() == opcaoCategoria) {
+                    saldoFiltrado += movimentacao.getValor();
+                }
+            }
+            return saldoFiltrado;
+        } else {
+            System.out.println("Categoria não encontrada");
+            return 0;
+        }
+    }
+
 }

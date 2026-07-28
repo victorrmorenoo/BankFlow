@@ -4,6 +4,7 @@ import br.com.bankflow.domain.Categoria;
 import br.com.bankflow.domain.FormaPagamento;
 import br.com.bankflow.domain.TipoCategoria;
 import br.com.bankflow.domain.Usuario;
+//import br.com.bankflow.util.FiltragemCategorias;
 import br.com.bankflow.util.ValidadorCampoObrigatorio;
 
 import java.time.LocalDate;
@@ -72,7 +73,7 @@ public class Main {
                         }
                     }
                     case 3 -> {
-                        consultarSaldo(login, formatoMoeda);
+                        consultarSaldo(sc, login, formatoMoeda);
                     }
                     case 6 -> {
                         System.out.println("Saindo da conta...");
@@ -121,8 +122,20 @@ public class Main {
         return login.getCarteira().registrarSaida(valor, data, descricao, categoria, formaPagamento);
     }
 
-    public static void consultarSaldo(Usuario login, NumberFormat formatoMoeda) {
-        System.out.println("Seu saldo atual é: " + formatoMoeda.format(login.getCarteira().getSaldo()));
+    public static void consultarSaldo(Scanner sc, Usuario login, NumberFormat formatoMoeda) {
+        System.out.println("Deseja filtrar a consulta?");
+        System.out.println("1 - Sim\n2 - Não");
+        int opcaoFiltro = sc.nextInt();
+        switch (opcaoFiltro) {
+            case 1 -> {
+                System.out.println("Seu saldo atual é: " + formatoMoeda.format(GerenciarCategorias.filtragemSaldo(sc, login)));
+            }
+            case 2 -> {
+                System.out.println("Seu saldo atual é: " + formatoMoeda.format(login.getCarteira().getSaldo()));
+            }
+            default -> {
+                System.out.println("Opção inválida");
+            }
+        }
     }
-
 }
