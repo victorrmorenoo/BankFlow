@@ -68,6 +68,7 @@ public class ValidadorCampoObrigatorio {
             System.out.println("1 - Dinheiro\n2 - Cartão de crédito\n3 - Cartão de débito\n4 - Pix\n5 - Transferência\n");
             System.out.print("Escolha uma opção: ");
             int opcaoPagamento = sc.nextInt();
+            sc.nextLine();
             switch (opcaoPagamento) {
                 case 1 -> {
                     return FormaPagamento.DINHEIRO;

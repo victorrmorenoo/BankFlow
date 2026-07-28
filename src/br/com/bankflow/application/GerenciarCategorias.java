@@ -63,10 +63,16 @@ public class GerenciarCategorias {
         }
     }
 
-    public static double filtragemSaldo(Scanner sc, Usuario login) {
+    public static double filtragemSaldo(Scanner sc, Usuario login, TipoCategoria tipo) {
+        List<Categoria> lista;
+        if (tipo == TipoCategoria.ENTRADA) {
+            lista = categoriasEntrada;
+        } else {
+            lista = categoriasSaida;
+        }
         double saldoFiltrado = 0;
         System.out.println("------ Escolha uma categoria ------");
-        for (Categoria categoria : categoriasEntrada) {
+        for (Categoria categoria : lista) {
             System.out.println("----------------");
             System.out.println(categoria.getId() + " - " + categoria.getNome());
         }
@@ -74,10 +80,11 @@ public class GerenciarCategorias {
         System.out.print("Escolha uma categoria (por numero): ");
         int opcaoCategoria = sc.nextInt();
 
-        if (opcaoCategoria > 0 && opcaoCategoria < categoriasEntrada.size()) {
-            System.out.println("Categoria selecionada: "+categoriasEntrada.get(opcaoCategoria - 1).getNome());
+        if (opcaoCategoria > 0 && opcaoCategoria <= lista.size()) {
+            System.out.println("Categoria selecionada: " + lista.get(opcaoCategoria - 1).getNome());
+            Categoria categoriaSelecionada = lista.get(opcaoCategoria - 1);
             for (Movimentacao movimentacao : login.getCarteira().getMovimentacoes()) {
-                if (movimentacao.getCategoria().getId() == opcaoCategoria) {
+                if (movimentacao.getCategoria().getId() == categoriaSelecionada.getId()) {
                     saldoFiltrado += movimentacao.getValor();
                 }
             }
@@ -87,5 +94,4 @@ public class GerenciarCategorias {
             return 0;
         }
     }
-
 }
