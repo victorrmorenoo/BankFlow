@@ -34,12 +34,12 @@ public class ValidadorCampoObrigatorio {
 
     public static LocalDate verificacaoData(Scanner sc, String tipo) {
         while (true) {
-            System.out.print("Digite o ano da " + tipo + ": ");
-            int ano = sc.nextInt();
-            System.out.print("Digite o mês da " + tipo + ": ");
-            int mes = sc.nextInt();
             System.out.print("Digite o dia da " + tipo + ": ");
             int dia = sc.nextInt();
+            System.out.print("Digite o mês da " + tipo + ": ");
+            int mes = sc.nextInt();
+            System.out.print("Digite o ano da " + tipo + ": ");
+            int ano = sc.nextInt();
             sc.nextLine();
 
             try {

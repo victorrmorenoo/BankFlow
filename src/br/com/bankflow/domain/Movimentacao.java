@@ -33,7 +33,5 @@ public class Movimentacao {
         return descricao;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
-    }
+    public Categoria getCategoria() {return categoria;}
 }

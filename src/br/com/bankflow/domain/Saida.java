@@ -9,4 +9,8 @@ public class Saida extends Movimentacao {
         super(id, valor, data, descricao, categoria);
         this.formaPagamento = formaPagamento;
     }
+
+    public FormaPagamento getFormaPagamento() {
+        return formaPagamento;
+    }
 }

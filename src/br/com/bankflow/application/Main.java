@@ -1,9 +1,6 @@
 package br.com.bankflow.application;
 
-import br.com.bankflow.domain.Categoria;
-import br.com.bankflow.domain.FormaPagamento;
-import br.com.bankflow.domain.TipoCategoria;
-import br.com.bankflow.domain.Usuario;
+import br.com.bankflow.domain.*;
 import br.com.bankflow.util.ValidadorCampoObrigatorio;
 
 import java.time.LocalDate;
@@ -73,6 +70,9 @@ public class Main {
                     }
                     case 3 -> {
                         consultarSaldo(sc, login, formatoMoeda);
+                    }
+                    case 4 -> {
+                        consultarMovimentacoes(sc, login, formatoMoeda);
                     }
                     case 6 -> {
                         System.out.println("Saindo da conta...");
@@ -150,10 +150,50 @@ public class Main {
                     }
                 }
 
-                System.out.println("Total movimentado em " + formatoMoeda.format(GerenciarCategorias.filtragemSaldo(sc, login, tipo)));
+                System.out.println("Total movimentado: " + formatoMoeda.format(GerenciarCategorias.filtragemSaldo(sc, login, tipo)));
             }
             case 2 -> {
                 System.out.println("Seu saldo atual é: " + formatoMoeda.format(login.getCarteira().getSaldo()));
+            }
+            default -> {
+                System.out.println("Opção inválida");
+            }
+        }
+    }
+
+    public static void consultarMovimentacoes(Scanner sc, Usuario login, NumberFormat formatoMoeda) {
+        System.out.println("Deseja filtrar a consulta?");
+        System.out.println("1 - Sim\n2 - Não");
+        System.out.print("Digite sua resposta: ");
+        int opcaoFiltro = sc.nextInt();
+        switch (opcaoFiltro) {
+            case 1 -> {
+                TipoCategoria tipo;
+                loopTipo:
+                while (true) {
+                    System.out.println("Deseja filtrar por entrada ou por saída?");
+                    System.out.println("1 - Entrada\n2 - Saída");
+                    System.out.print("Digite sua resposta: ");
+                    int opcaoTipo = sc.nextInt();
+                    switch (opcaoTipo) {
+                        case 1 -> {
+                            tipo = TipoCategoria.ENTRADA;
+                            break loopTipo;
+                        }
+                        case 2 -> {
+                            tipo = TipoCategoria.SAIDA;
+                            break loopTipo;
+                        }
+                        default -> {
+                            System.out.println("Opção inválida");
+                        }
+                    }
+                }
+
+                GerenciarCategorias.filtragemMovimentacoes(sc, login, formatoMoeda, tipo);
+            }
+            case 2 -> {
+                GerenciarCategorias.filtragemMovimentacoes(login, formatoMoeda);
             }
             default -> {
                 System.out.println("Opção inválida");

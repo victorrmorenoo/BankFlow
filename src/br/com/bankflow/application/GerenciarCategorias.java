@@ -1,10 +1,8 @@
 package br.com.bankflow.application;
 
-import br.com.bankflow.domain.Categoria;
-import br.com.bankflow.domain.Movimentacao;
-import br.com.bankflow.domain.TipoCategoria;
-import br.com.bankflow.domain.Usuario;
+import br.com.bankflow.domain.*;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -92,6 +90,59 @@ public class GerenciarCategorias {
         } else {
             System.out.println("Categoria não encontrada");
             return 0;
+        }
+    }
+
+    public static void filtragemMovimentacoes(Usuario login, NumberFormat formatoMoeda) {
+        List<Movimentacao> movimentacoes = login.getCarteira().getMovimentacoes();
+        if (!movimentacoes.isEmpty()) {
+            for (Movimentacao movimentacao : movimentacoes) {
+                exibirMovimentacao(movimentacao, formatoMoeda);
+            }
+        } else {
+            System.out.println("Nenhuma movimentação registrada");
+        }
+    }
+
+    public static void filtragemMovimentacoes(Scanner sc, Usuario login, NumberFormat formatoMoeda, TipoCategoria tipo) {
+        List<Categoria> lista;
+        List<Movimentacao> movimentacoes = login.getCarteira().getMovimentacoes();
+        if (tipo == TipoCategoria.ENTRADA) {
+            lista = categoriasEntrada;
+        } else {
+            lista = categoriasSaida;
+        }
+        System.out.println("------ Escolha uma categoria ------");
+        for (Categoria categoria : lista) {
+            System.out.println("----------------");
+            System.out.println(categoria.getId() + " - " + categoria.getNome());
+        }
+        System.out.println("----------------");
+        System.out.print("Escolha uma categoria (por numero): ");
+        int opcaoCategoria = sc.nextInt();
+
+        if (opcaoCategoria > 0 && opcaoCategoria <= lista.size()) {
+            System.out.println("Categoria selecionada: " + lista.get(opcaoCategoria - 1).getNome());
+            Categoria categoriaSelecionada = lista.get(opcaoCategoria - 1);
+            for (Movimentacao movimentacao : movimentacoes) {
+                if (movimentacao.getCategoria().getId() == categoriaSelecionada.getId()) {
+                    exibirMovimentacao(movimentacao, formatoMoeda);
+                }
+            }
+        } else {
+            System.out.println("Categoria não encontrada");
+        }
+    }
+
+    public static void exibirMovimentacao(Movimentacao movimentacao, NumberFormat formatoMoeda){
+        System.out.println("------Movimentação número " + movimentacao.getId() + "-------");
+        System.out.println("Valor Movimentado: " + formatoMoeda.format(movimentacao.getValor()));
+        System.out.println("Data: " + movimentacao.getData());
+        System.out.println("Descrição: " + movimentacao.getDescricao());
+        System.out.println("Categoria: " + movimentacao.getCategoria().getNome());
+        if (movimentacao instanceof Saida) {
+            Saida saida = (Saida) movimentacao;
+            System.out.println("Forma Pagamento: " + saida.getFormaPagamento());
         }
     }
 }
