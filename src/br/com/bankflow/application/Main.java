@@ -74,6 +74,9 @@ public class Main {
                     case 4 -> {
                         consultarMovimentacoes(sc, login, formatoMoeda);
                     }
+                    case 5 -> {
+                        GerenciarCategorias.gerarRelatorio(sc, login, formatoMoeda);
+                    }
                     case 6 -> {
                         System.out.println("Saindo da conta...");
                         login = null;

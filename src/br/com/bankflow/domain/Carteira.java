@@ -29,6 +29,7 @@ public class Carteira {
 
     public boolean registrarSaida(double valor, LocalDate data, String descricao, Categoria categoria, FormaPagamento formaPagamento) {
         if (valor > saldo || valor <= 0) {
+            System.out.println("Saldo insuficiente");
             return false;
         }
         Saida saida = new Saida(this.proximoId, valor, data, descricao, categoria, formaPagamento);

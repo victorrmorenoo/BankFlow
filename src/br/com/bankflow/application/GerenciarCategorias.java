@@ -134,7 +134,7 @@ public class GerenciarCategorias {
         }
     }
 
-    public static void exibirMovimentacao(Movimentacao movimentacao, NumberFormat formatoMoeda){
+    public static void exibirMovimentacao(Movimentacao movimentacao, NumberFormat formatoMoeda) {
         System.out.println("------Movimentação número " + movimentacao.getId() + "-------");
         System.out.println("Valor Movimentado: " + formatoMoeda.format(movimentacao.getValor()));
         System.out.println("Data: " + movimentacao.getData());
@@ -144,5 +144,137 @@ public class GerenciarCategorias {
             Saida saida = (Saida) movimentacao;
             System.out.println("Forma Pagamento: " + saida.getFormaPagamento());
         }
+    }
+
+    public static void gerarRelatorio(Scanner sc, Usuario login, NumberFormat formatomoeda) {
+        List<Movimentacao> movimentacoes = login.getCarteira().getMovimentacoes();
+        int anoEscolhido;
+        int mesEscolhido;
+
+        double totalEntrada = 0;
+        double totalSaida = 0;
+        double saldoPeriodo = 0;
+
+        //Entrada
+        double totalSalario = 0;
+        double totalInvestimento = 0;
+        double totalFreelance = 0;
+        double totalPresenteDoacao = 0;
+
+        //Saída
+        double totalAlimentacao = 0;
+        double totalTransporte = 0;
+        double totalMoradia = 0;
+        double totalSaude = 0;
+        double totalLazer = 0;
+        double totalParcelas = 0;
+
+
+        while (true) {
+            System.out.print("Escolha o ano: ");
+            anoEscolhido = sc.nextInt();
+            if (anoEscolhido < 2025) {
+                System.out.println("Ano inválido, tente novamente");
+                continue;
+            }
+            break;
+        }
+
+        while (true) {
+            System.out.print("Escolha o mês: ");
+            mesEscolhido = sc.nextInt();
+            if (mesEscolhido < 1 || mesEscolhido > 12) {
+                System.out.println("Mês inválido, tente novamente");
+                continue;
+            }
+            break;
+        }
+
+        for (Movimentacao movimentacao : movimentacoes) {
+            if (movimentacao.getData().getYear() == anoEscolhido && movimentacao.getData().getMonthValue() == mesEscolhido) {
+                if (movimentacao.getCategoria().getTipo() == TipoCategoria.ENTRADA) {
+                    totalEntrada += movimentacao.getValor();
+                    switch (movimentacao.getCategoria().getId()) {
+                        case 1 -> {
+                            totalSalario += movimentacao.getValor();
+                        }
+                        case 2 -> {
+                            totalInvestimento += movimentacao.getValor();
+                        }
+                        case 3 -> {
+                            totalFreelance += movimentacao.getValor();
+                        }
+                        case 4 -> {
+                            totalPresenteDoacao += movimentacao.getValor();
+                        }
+                    }
+                } else {
+                    totalSaida += movimentacao.getValor();
+                    switch (movimentacao.getCategoria().getId()) {
+                        case 5 -> {
+                            totalAlimentacao += movimentacao.getValor();
+                        }
+                        case 6 -> {
+                            totalTransporte += movimentacao.getValor();
+                        }
+                        case 7 -> {
+                            totalMoradia += movimentacao.getValor();
+                        }
+                        case 8 -> {
+                            totalSaude += movimentacao.getValor();
+                        }
+                        case 9 -> {
+                            totalLazer += movimentacao.getValor();
+                        }
+                        case 10 -> {
+                            totalParcelas += movimentacao.getValor();
+                        }
+                    }
+                }
+
+            }
+        }
+        saldoPeriodo = totalEntrada - totalSaida;
+
+        System.out.println("\n------- Relatório -------");
+        System.out.println("Total de entradas: " + formatomoeda.format(totalEntrada));
+        System.out.println("Total de saídas: " + formatomoeda.format(totalSaida));
+        System.out.println("Saldo do período: " + formatomoeda.format(saldoPeriodo));
+        if (totalEntrada > 0 || totalSaida > 0) {
+            System.out.println("\n------- Por categoria -------");
+        } else {
+            System.out.println("\nNenhuma movimentação registrada");
+        }
+        if (totalSalario > 0) {
+            System.out.println("Salário: " + formatomoeda.format(totalSalario));
+        }
+        if (totalInvestimento > 0) {
+            System.out.println("Investimento: " + formatomoeda.format(totalInvestimento));
+        }
+        if (totalFreelance > 0) {
+            System.out.println("Freelance: " + formatomoeda.format(totalFreelance));
+        }
+        if (totalPresenteDoacao > 0) {
+            System.out.println("Presente/Doação: " + formatomoeda.format(totalPresenteDoacao));
+        }
+        if (totalAlimentacao > 0) {
+            System.out.println("Alimentação: " + formatomoeda.format(totalAlimentacao));
+        }
+        if (totalTransporte > 0) {
+            System.out.println("Transporte: " + formatomoeda.format(totalTransporte));
+        }
+        if (totalMoradia > 0) {
+            System.out.println("Moradia: " + formatomoeda.format(totalMoradia));
+        }
+        if (totalSaude > 0) {
+            System.out.println("Saúde: " + formatomoeda.format(totalSaude));
+        }
+        if (totalLazer > 0) {
+            System.out.println("Lazer: " + formatomoeda.format(totalLazer));
+        }
+        if (totalParcelas > 0) {
+            System.out.println("Parcelas: " + formatomoeda.format(totalParcelas));
+        }
+        System.out.println("\n");
     }
 }
